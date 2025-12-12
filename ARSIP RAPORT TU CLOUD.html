@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arsip Raport - Pondok Madrasah Al-Ittifaqiah</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #dff7ff, #bde6ff, #9cd4ff);
+    }
+    header {
+      background: linear-gradient(90deg, #00a884, #01c7a3);
+      color: white;
+    }
+    footer {
+      background: #f0fdf4;
+      border-top: 2px solid #86efac;
+    }
+    .panel-highlight {
+      background: #f0f9ff !important;
+      border-color: #7dd3fc !important;
+    }
+    .btn-green {
+      background: #059669 !important;
+      color: white !important;
+    }
+    .btn-green:hover {
+      background: #047857 !important;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-white via-sky-50 to-sky-100 p-6">
+  <div class="max-w-4xl mx-auto bg-white shadow-2xl rounded-2xl overflow-hidden">
+
+    <!-- HEADER -->
+    <header class="flex items-center gap-4 p-6 border-b">
+      <div class="w-20 h-20 rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-white font-bold text-sm">LOGO</div>
+      <div>
+        <h1 class="text-2xl font-extrabold">ARSIP RAPORT</h1>
+        <p class="text-sm text-slate-600">Pondok Madrasah Al-Ittifaqiah Indralaya Kampus Kuripan</p>
+      </div>
+      <div class="ml-auto text-right">
+        <span class="text-xs text-slate-500">Tema:</span>
+        <div class="text-sm font-medium text-slate-700">Arsip Raport Sekolah</div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="p-6">
+
+      <!-- CARA UPLOAD -->
+      <section class="mb-6">
+        <h2 class="text-lg font-semibold mb-2">Cara Upload</h2>
+        <ol class="list-decimal list-inside text-sm text-slate-700 space-y-1">
+          <li>Pilih file raport di bawah untuk membuat pratinjau lokal (tidak tersimpan di server).</li>
+          <li>Setelah memilih file, klik tombol <strong>Buka Formulir</strong> untuk membuka Google Form dan unggah file di sana.</li>
+          <li>Untuk melihat hasil upload, klik <strong>Lihat Hasil</strong> menuju Google Sheets.</li>
+        </ol>
+      </section>
+
+      <!-- UPLOAD & LINK PANEL -->
+      <section class="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <!-- INPUT FILE -->
+        <div class="p-4 rounded-xl border-dashed border-2 border-slate-200 flex flex-col items-start gap-3">
+          <label class="text-sm font-medium">Pilih File (PDF/JPG/PNG)</label>
+          <input id="fileInput" type="file" multiple />
+          <p class="text-xs text-slate-500">File tidak dikirim otomatis — Anda harus mengunggahnya lewat Google Form.</p>
+        </div>
+
+        <!-- BUTTON PANEL -->
+        <div class="p-4 rounded-xl border panel-highlight">
+          <div class="flex gap-2">
+            <button onclick="openForm()" class="px-4 py-2 rounded-lg shadow-sm border btn-green">Buka Formulir Upload</button>
+            <button onclick="openSheet()" class="px-4 py-2 rounded-lg shadow-sm border bg-emerald-50 hover:bg-emerald-100">Lihat Hasil</button>
+          </div>
+
+          <div class="mt-3 text-xs text-slate-600">
+            Link Form: <a href="https://forms.gle/7MRWNJwLeP3AESgc9" target="_blank" class="underline">Buka Form</a><br />
+            Link Spreadsheet: <a href="https://docs.google.com/spreadsheets/d/1_63-BeCeoVrybZpeynn_OicRM_JV6kimNDqthVzEboM/edit?usp=sharing" target="_blank" class="underline">Buka Spreadsheet</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- PREVIEW SECTION -->
+      <section>
+        <h3 class="font-semibold mb-2">Pratinjau File (Hanya Lokal)</h3>
+        <div id="previewContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-600"></div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="p-4 border-t text-xs text-slate-600 flex items-center justify-between">
+      <div>© 2025 Madrasah Al-Ittifaqiah Kampus Kuripan</div>
+      <div>Desain: Tema Arsip Raport</div>
+    </footer>
+
+  </div>
+
+<script>
+  const FORM_LINK = "https://forms.gle/7MRWNJwLeP3AESgc9";
+  const SHEET_LINK = "https://docs.google.com/spreadsheets/d/1_63-BeCeoVrybZpeynn_OicRM_JV6kimNDqthVzEboM/edit?usp=sharing";
+
+  function openForm() {
+    window.open(FORM_LINK, '_blank');
+  }
+
+  function openSheet() {
+    window.open(SHEET_LINK, '_blank');
+  }
+
+  document.getElementById('fileInput').addEventListener('change', function(e) {
+    const files = Array.from(e.target.files);
+    const container = document.getElementById('previewContainer');
+
+    files.forEach(file => {
+      const readerURL = URL.createObjectURL(file);
+      const ext = file.name.split('.').pop().toUpperCase();
+
+      const box = document.createElement('div');
+      box.className = "border rounded-lg p-3 bg-white shadow-sm";
+
+      box.innerHTML = `
+        <div class='flex items-start gap-3'>
+          <div class='w-16 h-16 bg-slate-100 rounded-md flex items-center justify-center text-xs overflow-hidden'>
+            ${file.type.startsWith('image')
+              ? `<img src='${readerURL}' class='object-cover w-full h-full' />`
+              : `<div class='p-2'>${ext}</div>`}
+          </div>
+          <div class='flex-1'>
+            <div class='font-medium'>${file.name}</div>
+            <div class='text-xs text-slate-500'>${Math.round(file.size / 1024)} KB</div>
+            <div class='mt-2 flex gap-2'>
+              <a href='${readerURL}' target='_blank' class='text-xs underline'>Buka</a>
+            </div>
+          </div>
+        </div>`;
+
+      container.appendChild(box);
+    });
+
+    if (confirm("File preview dibuat secara lokal. Buka Google Form untuk mengunggah file?")) {
+      openForm();
+    }
+  });
+</script>
+
+</body>
+</html>
